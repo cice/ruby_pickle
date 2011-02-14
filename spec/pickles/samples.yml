@@ -1,0 +1,12 @@
+pickles:
+  simple_int:
+    "I123\n.": 123
+  neg_int:
+    "I-156\n.": -156
+  simple_string:
+    "S'abc'\np0\n.": "abc"
+  ml_string:
+    "S'abc\\ncde'\np0\n.": "abc\ncde"
+
+
+
