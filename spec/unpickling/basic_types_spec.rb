@@ -1,27 +1,70 @@
 require 'spec_helper'
 
 module RubyPickle
-  describe VirtualMachine do
+  describe Unpickler do
     include SpecHelper
     
     it 'unpickles Integers' do
-      value = unpickle_sample 'simple_int'
-      value.should == sample_value('simple_int')
+      run_sample 'simple_int'
     end
     
     it 'unpickles negative Integers' do
-      value = unpickle_sample 'neg_int'
-      value.should == sample_value('neg_int')
+      run_sample 'neg_int'
     end
     
     it 'unpickles strings' do
-      value = unpickle_sample 'simple_string'
-      value.should == sample_value('simple_string')
+      run_sample 'simple_string'
     end
     
     it 'unpickles multiline strings' do
-      value = unpickle_sample 'ml_string'
-      value.should == sample_value('ml_string')
+      run_sample 'ml_string'
+    end
+    
+    it 'unpickles floats' do
+      run_sample 'simple_float'
+    end
+    
+    it 'unpickles unprecise floats' do
+      run_sample 'unprec_float'
+    end
+    
+    it 'unpickles long int' do
+      run_sample 'long_int'
+    end
+    
+    it 'unpickles 4byte bin int' do
+      run_sample 'binint'
+    end
+    
+    it 'unpickles 1byte bin int' do
+      run_sample 'binint1'
+    end
+    
+    it 'unpickles none' do
+      run_sample 'none'
+    end
+    
+    it 'unpickles boolean types' do
+      run_sample 'true_val'
+      run_sample 'false_val'
+    end
+    
+    it 'unpickles binstring' do
+      run_sample 'binstring'
+      run_sample 'ml_binstring'
+    end
+    
+    it 'unpickles short binstring' do
+      run_sample 'short_binstring'
+    end
+    
+    it 'unpickles unicode string' do
+      # pending "need lib to convert unicode code points to mb chars"
+      run_sample 'unicode_string'
+    end
+    
+    it 'unpickles short unicode string' do
+      run_sample 'short_unicode_string'
     end
   end
 end

@@ -1,4 +1,4 @@
-require 'ruby_pickle/virtual_machine'
+require 'ruby_pickle/unpickler'
 
 module RubyPickle
 end

@@ -7,6 +7,72 @@ pickles:
     "S'abc'\np0\n.": "abc"
   ml_string:
     "S'abc\\ncde'\np0\n.": "abc\ncde"
-
-
-
+  simple_float:
+    "F1.2234\n.": 1.2234
+  unprec_float:
+    "F0.10000000000000001\n.": 0.10000000000000001
+  long_int:
+    "L12L\n.": 12
+  binint:
+    'J\xf2\xa3\xff\x34.': 889168882
+  binint1:
+    'K\x32.': 50
+  binint2:
+    'M\x23\xf3.': 62243
+  none:
+    'N.': null
+  true_val:
+    "I01\n.": true
+  false_val:
+    "I00\n.": false
+  binstring:
+    'T\x05\x00\x00\x00abcde.': 'abcde'
+  ml_binstring:
+    "T\\x06\\x00\\x00\\x00ab\ncde.": "ab\ncde"
+  short_binstring:
+    "U\\x06ab\ncde.": "ab\ncde"
+  unicode_string:
+    "V\\u0100\n.": "Ā"
+  short_unicode_string:
+    "X\\x02\\x00\\x00\\x00\xC4\x80.": "Ā"
+  one_element_list_simple:
+    "(I1\nl.":
+      - 1
+  one_element_list:
+    "(lp0\nI1\na.":
+      - 1
+  multi_int_list:
+    "(lp0\nI1\naI2\naI3\naI4\na.":
+      - 1
+      - 2
+      - 3
+      - 4
+  mixed_list:
+    "(lp0\nI1\naI2\naI3\naS'abc'\np1\na.":
+      - 1
+      - 2
+      - 3
+      - abc
+  simple_dict:
+    "(I1\nI2\nd.":
+      1: 2
+  dict1:
+    "(dp0\nS'a'\np1\nS'b'\np2\ns.":
+      a: b
+  nested_list:
+    "(lp0\nI1\na(lp1\nI2\na(lp2\nI3\naI4\naaa.":
+      - 1
+      - 
+        - 2
+        -
+          - 3
+          - 4
+  nested_dict:
+    "(dp0\nI1\n(dp1\nI2\n(dp2\nI3\nI4\nsss.":
+      1:
+        2:
+          3: 4
+  empty_list:
+    "].": []
+  empty_dict:
+    "}.": {}

@@ -23,7 +23,11 @@ module SpecHelper
   end
   
   def unpickle_sample label
-    RubyPickle::VirtualMachine.new(sample_pickle(label)).to_ruby
+    RubyPickle::Unpickler.new(sample_pickle(label)).to_ruby
+  end
+  
+  def run_sample label
+    unpickle_sample(label).should == sample_value(label)
   end
 end
 
