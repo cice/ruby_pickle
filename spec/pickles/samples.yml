@@ -14,11 +14,11 @@ pickles:
   long_int:
     "L12L\n.": 12
   binint:
-    'J\xf2\xa3\xff\x34.': 889168882
+    "J\xf2\xa3\xff\x34.": 889168882
   binint1:
-    'K\x32.': 50
+    "K\x32.": 50
   binint2:
-    'M\x23\xf3.': 62243
+    "M\x23\xf3.": 62243
   none:
     'N.': null
   true_val:
@@ -26,15 +26,15 @@ pickles:
   false_val:
     "I00\n.": false
   binstring:
-    'T\x05\x00\x00\x00abcde.': 'abcde'
+    "T\x05\x00\x00\x00abcde.": 'abcde'
   ml_binstring:
-    "T\\x06\\x00\\x00\\x00ab\ncde.": "ab\ncde"
+    "T\x06\x00\x00\x00ab\ncde.": "ab\ncde"
   short_binstring:
-    "U\\x06ab\ncde.": "ab\ncde"
+    "U\x06ab\ncde.": "ab\ncde"
   unicode_string:
-    "V\\u0100\n.": "Ā"
+    "V\x01\x00\n.": "Ā"
   short_unicode_string:
-    "X\\x02\\x00\\x00\\x00\xC4\x80.": "Ā"
+    "X\x02\x00\x00\x00\xC4\x80.": "Ā"
   one_element_list_simple:
     "(I1\nl.":
       - 1
@@ -76,3 +76,29 @@ pickles:
     "].": []
   empty_dict:
     "}.": {}
+  simple_tuple:
+    "(I1\nI2\nI3\ntp0\n.":
+      - 1
+      - 2
+      - 3
+  empty_tuple:
+    ").": []
+  appends_elements:
+    "(l(I1\nI2\nI3\ne.":
+      - 1
+      - 2
+      - 3
+  put_get:
+    "I12\np0\n0I23\ng0\n.": 12
+  update_dict:
+    "}(I1\nI2\nu.":
+      1: 2
+  n_tuple:
+    "I1\nI2\nI3\n\x87.":
+      - 1
+      - 2
+      - 3
+  new_true:
+    "\x88": true
+  new_false:
+    "\x89": false

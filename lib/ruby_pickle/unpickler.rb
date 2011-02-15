@@ -1,12 +1,12 @@
-require 'ruby_pickle/operations'
-require 'ruby_pickle/virtual_machine'
-require 'ruby_pickle/util'
-require 'ruby_pickle/simple_types'
-require 'ruby_pickle/lists'
-
 module RubyPickle
   class Unpickler
-    Mark = Object.new
+    autoload :Operations, 'ruby_pickle/unpickler/operations'
+    autoload :VirtualMachine, 'ruby_pickle/unpickler/virtual_machine'
+    autoload :Util, 'ruby_pickle/unpickler/util'
+    autoload :SimpleTypes, 'ruby_pickle/unpickler/simple_types'
+    autoload :Lists, 'ruby_pickle/unpickler/lists'
+
+    Marker = Object.new
     
     include Operations
     include VirtualMachine
@@ -40,45 +40,116 @@ module RubyPickle
     protected
     def dispatch next_op
       case next_op
-      when 'I'
+      when INT
         load_integer
-      when 'S'
+      when STRING
         load_string
-      when 'F'
+      when FLOAT
         load_float
-      when 'L'
+      when LONG
         load_long_int
-      when 'J'
+      when BININT
         load_bin_int
-      when 'K'
+      when BININT1
         load_bin_int1
-      when 'N'
+      when NONE
         nil
-      when 'T'
+      when BINSTRING
         load_bin_string
-      when 'U'
+      when SHORT_BINSTRING
         load_short_bin_string
-      when 'V'
+      when UNICODE
         load_unicode_string
-      when 'X'
+      when BINUNICODE
         load_short_unicode_string
-      when '('
+      when MARK
         set_mark
-      when 'l'
+      when LIST
         build_list
-      when 'p'
+      when PUT
         put
-      when 'a'
+      when APPEND
         append
-      when 'd'
+      when DICT
         build_dict
-      when 's'
+      when SETITEM
         set_item
-      when ']'
+      when EMPTY_LIST
         load_empty_list
+      when EMPTY_DICT
+        load_empty_dict
+      when EMPTY_TUPLE
+        load_empty_tuple
+      when TUPLE
+        build_tuple
+      when POP
+        pop
+      when POP_MARK
+        pop_stack_to_mark
+      when DUP
+        dup
+      when APPENDS
+        appends
+      when GET
+        get
+      when SETITEMS
+        set_items
+      when TUPLE1
+        load_tuple(1)
+      when TUPLE2
+        load_tuple(2)
+      when TUPLE3
+        load_tuple(3)
+      when NEWTRUE
+        load_true
+      when NEWFALSE
+        load_false
       else
         raise "KENN ISCH NIT: '#{next_op}'"
       end
+    end
+    
+    def load_true
+      push true
+    end
+    
+    def load_false
+      push false
+    end
+    
+    def load_tuple n
+      push pop_n(n).reverse
+    end
+    
+    def set_items
+      elements = pop_stack_to_mark
+      peek.merge! Hash[*elements]
+    end
+    
+    def get
+      pos = read_arg.to_i
+      push memo[pos]
+    end
+    
+    def appends
+      elements = pop_stack_to_mark
+      peek.concat elements
+    end
+    
+    def dup
+      push peek
+    end
+    
+    def build_tuple
+      push [*pop_stack_to_mark]
+    end    
+    
+    def load_empty_tuple
+      push []
+    end
+    
+    def load_empty_dict
+      push Hash.new
     end
     
     def load_empty_list
@@ -86,7 +157,7 @@ module RubyPickle
     end
     
     def build_dict
-      push Hash[*read_stack_to_mark]
+      push Hash[*pop_stack_to_mark]
     end
     
     def set_item
@@ -109,19 +180,26 @@ module RubyPickle
     end
     
     def build_list
-      push [*read_stack_to_mark]
+      push [*pop_stack_to_mark]
     end
     
-    def read_stack_to_mark
+    def pop_n n
+      [].tap do |array|
+        n.times do
+          array << pop
+        end
+      end
+    end
+    
+    def pop_stack_to_mark
       elements = []
       element = pop
       
-      while element != Mark do
+      while element != Marker do
         elements.unshift element
         element = pop
       end
       
-      push_some elements
       elements
     end
     
@@ -132,7 +210,7 @@ module RubyPickle
     end
     
     def set_mark
-      push Mark
+      push Marker
     end
   end
 end

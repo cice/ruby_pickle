@@ -1,5 +1,5 @@
 module RubyPickle
-  module Lists
+  class Pickler
     
   end
 end

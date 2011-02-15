@@ -66,5 +66,10 @@ module RubyPickle
     it 'unpickles short unicode string' do
       run_sample 'short_unicode_string'
     end
+    
+    it 'unpickles new boolean' do
+      run_sample 'new_true'
+      run_sample 'new_false'
+    end
   end
 end

@@ -30,7 +30,6 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  activesupport (>= 3.0.0)
   rspec
   ruby-debug
   ruby_pickle!

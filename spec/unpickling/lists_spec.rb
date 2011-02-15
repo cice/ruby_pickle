@@ -43,5 +43,29 @@ module RubyPickle
     it 'unpickles empty dict' do
       run_sample 'empty_dict'
     end
+    
+    it 'unpickles tuples' do
+      run_sample 'simple_tuple'
+    end
+    
+    it 'unpickles empty tuple' do
+      run_sample 'empty_tuple'
+    end
+    
+    it 'unpickles appended list items' do
+      run_sample 'appends_elements'
+    end
+    
+    it 'unpickles put / get' do
+      run_sample 'put_get'
+    end
+    
+    it 'unpickles update dict' do
+      run_sample 'update_dict'
+    end
+    
+    it 'unpickles n-tuples' do
+      run_sample 'n_tuple'
+    end
   end
 end
