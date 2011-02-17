@@ -54,6 +54,14 @@ module RubyPickle
         length = eval_binint(read(4))
         push read(length)
       end
+    
+      def load_true
+        push true
+      end
+    
+      def load_false
+        push false
+      end
     end
   end
 end

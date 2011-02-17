@@ -3,6 +3,7 @@ require 'iconv'
 module RubyPickle
   class Unpickler
     module Util
+      
       def eval_unicode_cp codepoints
         utf16 = codepoints.gsub(/\\u..../) { |match|
           match[2,2].to_i(16).chr + match[4,2].to_i(16).chr
@@ -31,7 +32,7 @@ module RubyPickle
       end
  
       def read_arg
-        @pickle.readline("\n")[0..-2]
+        @pickle.readline(Operations::NEWLINE)[0..-2]
       end
     
       def read_arg_skip

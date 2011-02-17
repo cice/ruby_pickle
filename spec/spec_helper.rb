@@ -26,8 +26,16 @@ module SpecHelper
     RubyPickle::Unpickler.new(sample_pickle(label)).to_ruby
   end
   
+  def pickle_sample label
+    RubyPickle::Pickler.new(sample_value(label)).to_pickle
+  end
+  
   def run_sample label
     unpickle_sample(label).should == sample_value(label)
+  end
+  
+  def run_pickle label
+    pickle_sample(label).should == sample_pickle(label)
   end
 end
 

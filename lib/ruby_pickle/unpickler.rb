@@ -1,18 +1,19 @@
+require 'ruby_pickle/operations'
+
 module RubyPickle
   class Unpickler
-    autoload :Operations, 'ruby_pickle/unpickler/operations'
     autoload :VirtualMachine, 'ruby_pickle/unpickler/virtual_machine'
     autoload :Util, 'ruby_pickle/unpickler/util'
     autoload :SimpleTypes, 'ruby_pickle/unpickler/simple_types'
-    autoload :Lists, 'ruby_pickle/unpickler/lists'
+    autoload :ComplexTypes, 'ruby_pickle/unpickler/complex_types'
 
-    Marker = Object.new
+    Mark = Object.new.freeze
     
     include Operations
     include VirtualMachine
     include Util
     include SimpleTypes
-    include Lists
+    include ComplexTypes
     attr_accessor :pickle, :stack, :memo
     
     def pickle= pickle_string
@@ -109,108 +110,8 @@ module RubyPickle
       end
     end
     
-    def load_true
-      push true
-    end
-    
-    def load_false
-      push false
-    end
-    
-    def load_tuple n
-      push pop_n(n).reverse
-    end
-    
-    def set_items
-      elements = pop_stack_to_mark
-      peek.merge! Hash[*elements]
-    end
-    
-    def get
-      pos = read_arg.to_i
-      push memo[pos]
-    end
-    
-    def appends
-      elements = pop_stack_to_mark
-      peek.concat elements
-    end
-    
-    def dup
-      push peek
-    end
-    
-    def build_tuple
-      push [*pop_stack_to_mark]
-    end    
-    
-    def load_empty_tuple
-      push []
-    end
-    
-    def load_empty_dict
-      push Hash.new
-    end
-    
-    def load_empty_list
-      push []
-    end
-    
-    def build_dict
-      push Hash[*pop_stack_to_mark]
-    end
-    
-    def set_item
-      val, key = pop, pop
-      peek[key] = val
-    end
-    
-    def append
-      element = pop
-      peek << element
-    end
-    
-    def peek
-      stack.last
-    end
-    
-    def put
-      pos = read_arg.to_i
-      memo[pos] = peek
-    end
-    
-    def build_list
-      push [*pop_stack_to_mark]
-    end
-    
-    def pop_n n
-      [].tap do |array|
-        n.times do
-          array << pop
-        end
-      end
-    end
-    
-    def pop_stack_to_mark
-      elements = []
-      element = pop
-      
-      while element != Marker do
-        elements.unshift element
-        element = pop
-      end
-      
-      elements
-    end
-    
-    def push_some elements
-      elements.each do |e|
-        push e
-      end
-    end
-    
     def set_mark
-      push Marker
+      push Mark
     end
   end
 end
