@@ -2,7 +2,6 @@
 #include <ruby.h> 
 #include <stdio.h>
 #include "util.h"
-#include <iconv.h>
 
 // Array to hold function pointers to all operations
 static void(*dispatch[256])(VirtualMachine*, VALUE) = {};
@@ -10,12 +9,15 @@ static void(*dispatch[256])(VirtualMachine*, VALUE) = {};
 // Hold a global Marker
 static VALUE Marker;
 
-static iconv_t iconv_cd;
-
 uchar read_one(VALUE stream) {
   VALUE byte = rb_funcall(stream, meth_read, 0);
   
   return NUM2CHR(byte);
+}
+
+VALUE pack_to_utf8(VALUE ary) {
+  VALUE unicode = rb_str_new2("U*");
+  return rb_funcall(ary, meth_pack, 1, unicode);
 }
 
 VALUE read_to_nl(VALUE stream) {
@@ -28,7 +30,7 @@ VALUE read_to_nl(VALUE stream) {
     buf = read_one(stream);
   }
   
-  string = rb_funcall(string, meth_pack, 1, rb_str_new2("U*"));
+  string = pack_to_utf8(string);
   return string;
 }
 
@@ -153,7 +155,6 @@ static void dispatcher(VirtualMachine *vm, uchar op_code, VALUE stream) {
 }
 
 static VALUE reader(VALUE self) {
-  iconv_cd = iconv_open("UTF-8", "UTF-16");
   VALUE stream = rb_iv_get(self, "@stream");
   rb_funcall(stream, meth_rewind, 0);
   
@@ -167,7 +168,6 @@ static VALUE reader(VALUE self) {
   }
   VALUE retval = vmpop(vm);
   
-  iconv_close(iconv_cd);
   // free_vm(vm);
   return retval;
 }
@@ -463,7 +463,7 @@ static void load_unicode(VirtualMachine *vm, VALUE stream) {
     buf = read_one(stream);
   }
   
-  VALUE string = rb_funcall(bytes, meth_pack, 1, rb_str_new2("U*"));
+  VALUE string = pack_to_utf8(bytes);
   vmpush(vm, string);
 }
 

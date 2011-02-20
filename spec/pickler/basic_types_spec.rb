@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 module RubyPickle
-  describe Unpickler do
+  describe Pickler do
     include SpecHelper
     
     it 'pickles Integers' do
