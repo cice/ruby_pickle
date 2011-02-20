@@ -15,6 +15,10 @@ module RubyPickle
           arg.to_i
         end
       end
+      
+      def load_nil
+        push nil
+      end
     
       def load_string
         push eval_string(read_arg)
@@ -47,7 +51,14 @@ module RubyPickle
       end
     
       def load_unicode_string
-        push eval_unicode_cp(read_arg)
+        char = nil
+        bytes = []
+        while char != "\n" do
+          bytes << char[0] if char
+          char = read
+        end
+          
+        push eval_unicode_cp(bytes)
       end
     
       def load_short_unicode_string

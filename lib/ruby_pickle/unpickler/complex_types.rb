@@ -1,3 +1,5 @@
+require 'ruby-debug'
+
 module RubyPickle
   class Unpickler
     module ComplexTypes
@@ -47,8 +49,7 @@ module RubyPickle
     
       def build_list
         push [*pop_stack_to_mark]
-      end
-    
+      end 
     end
   end
 end

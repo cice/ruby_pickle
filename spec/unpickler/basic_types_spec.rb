@@ -15,15 +15,15 @@ module RubyPickle
     it 'unpickles strings' do
       run_sample 'simple_string'
     end
-    
+    # 
     it 'unpickles multiline strings' do
       run_sample 'ml_string'
     end
-    
+    # 
     it 'unpickles floats' do
       run_sample 'simple_float'
     end
-    
+    # 
     it 'unpickles unprecise floats' do
       run_sample 'unprec_float'
     end
@@ -35,7 +35,7 @@ module RubyPickle
     it 'unpickles 4byte bin int' do
       run_sample 'binint'
     end
-    
+    # 
     it 'unpickles 1byte bin int' do
       run_sample 'binint1'
     end
@@ -59,7 +59,6 @@ module RubyPickle
     end
     
     it 'unpickles unicode string' do
-      # pending "need lib to convert unicode code points to mb chars"
       run_sample 'unicode_string'
     end
     

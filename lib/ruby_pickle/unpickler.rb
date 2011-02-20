@@ -14,28 +14,30 @@ module RubyPickle
     include Util
     include SimpleTypes
     include ComplexTypes
-    attr_accessor :pickle, :stack, :memo
+    attr_accessor :stream, :stack, :memo
     
-    def pickle= pickle_string
-      @pickle = String === pickle_string ? StringIO.new(pickle_string) : pickle_string
+    def stream= pickle_string
+      @stream = String === pickle_string ? StringIO.new(pickle_string) : pickle_string
     end
     
-    def initialize pickle = nil
-      self.pickle = pickle
+    def initialize stream = nil
+      self.stream = stream
     end
     
-    def to_ruby
-      return nil if pickle.nil? || !pickle.is_a?(StringIO)
+    unless method_defined?(:to_ruby)
+      def to_ruby
+        return nil if stream.nil? || !stream.is_a?(StringIO)
       
-      setup_vm
-      pickle.rewind
+        setup_vm
+        stream.rewind
       
-      while (next_op = read)
-        break if next_op == STOP
-        dispatch next_op
+        while (next_op = read)
+          break if next_op == STOP
+          dispatch next_op
+        end
+      
+        pop
       end
-      
-      pop
     end
     
     protected
@@ -54,7 +56,7 @@ module RubyPickle
       when BININT1
         load_bin_int1
       when NONE
-        nil
+        load_nil
       when BINSTRING
         load_bin_string
       when SHORT_BINSTRING

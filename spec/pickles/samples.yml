@@ -32,7 +32,7 @@ pickles:
   short_binstring:
     "U\x06ab\ncde.": "ab\ncde"
   unicode_string:
-    "V\x01\x00\n.": "Ā"
+    "V\\u0100\\u000a\xe4abcd\n.": "Ā\näabcd"
   short_unicode_string:
     "X\x02\x00\x00\x00\xC4\x80.": "Ā"
   one_element_list_simple:
@@ -99,6 +99,6 @@ pickles:
       - 2
       - 3
   new_true:
-    "\x88": true
+    "\x88.": true
   new_false:
-    "\x89": false
+    "\x89.": false

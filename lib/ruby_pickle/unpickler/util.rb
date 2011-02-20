@@ -4,12 +4,16 @@ module RubyPickle
   class Unpickler
     module Util
       
-      def eval_unicode_cp codepoints
-        utf16 = codepoints.gsub(/\\u..../) { |match|
-          match[2,2].to_i(16).chr + match[4,2].to_i(16).chr
+      def eval_unicode_cp bytes
+        iconv = Iconv.new 'UTF-8', 'UTF-16'
+
+        string = bytes.to_a.pack("U*")
+        
+        string = string.gsub(/\\u..../) { |match|
+          iconv.iconv match[2,2].to_i(16).chr + match[4,2].to_i(16).chr
         }
-      
-        Iconv.conv('UTF-8', 'UTF-16', utf16)
+        
+        string
       end
     
       def eval_binint string
@@ -32,7 +36,7 @@ module RubyPickle
       end
  
       def read_arg
-        @pickle.readline(Operations::NEWLINE)[0..-2]
+        stream.readline(Operations::NEWLINE)[0..-2]
       end
     
       def read_arg_skip

@@ -1,4 +1,4 @@
-require 'bigdecimal'
+require 'bigdecimal' unless defined?(BigDecimal)
 require 'ruby_pickle/operations'
 require 'set'
 
@@ -26,8 +26,8 @@ module RubyPickle
         save_float object
       when Numeric
         save_int object
-      when String
-        save_string object
+      when String, Symbol
+        save_string object.to_s
       when TrueClass, FalseClass
         save_boolean object
       when nil

@@ -10,7 +10,7 @@ module RubyPickle
       end
     
       def read length = 1
-        @pickle.read length
+        stream.read length
       end
     
       def peek

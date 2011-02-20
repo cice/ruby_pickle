@@ -1,5 +1,6 @@
 # -*- encoding: utf-8 -*-
 $:.push File.expand_path("../lib", __FILE__)
+$:.push File.expand_path("../ext", __FILE__)
 require "ruby_pickle/version"
 
 Gem::Specification.new do |s|
